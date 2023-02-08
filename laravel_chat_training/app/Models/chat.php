@@ -15,12 +15,16 @@ class chat extends Model
     ];
 
     
-    public function users()
+    public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'admin_id');
     }
 
     
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
     public function massages()
     {
         return $this->hasMany(massage::class);
