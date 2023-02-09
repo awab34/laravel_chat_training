@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\massage;
 use App\Models\User;
 use Auth;
-
+use App\Models\friend;
 
 class ChatController extends Controller
 {
@@ -45,18 +45,33 @@ class ChatController extends Controller
     public function show($id)
     {
         $chat = chat::where('id',$id)->first();
-        $messages = massage::where('chat_id',2)->orderBy('created_at','DESC')->get();
-        $users = User::all();
-        return view('chat.show')->with('chat',$chat)->with('messages',$messages)->with('users',$users);
+        $messages = massage::where('chat_id',$id)->get();
+        $secondFriends = friend::where('first_freind',Auth::id())->get();
+        $firstFriends = friend::where('second_freind',Auth::id())->get();
+        $friendsArray = [];
+        foreach ($firstFriends as $friend) {
+            $user = User::find($friend->first_freind);
+            $friendsArray[] =  ['id'=>$friend->first_freind,'name'=>$user->name];
+        }
+        foreach ($secondFriends as $friend) {
+            $user = User::find($friend->second_freind);
+            $friendsArray[] =  ['id'=>$friend->second_freind,'name'=>$user->name];
+        }
+        return view('chat.show')->with('chat',$chat)->with('messages',$messages)->with('friends',$friendsArray);
     }
     
     public function update(Request $request, $id)
     {
         $chat = chat::find($id);
-        $request->validate([
-            'users' => 'required',
-        ]);
-        $chat->users()->sync($request->users);
+        
+        $userArray = [];
+        if(!is_null($request->users)){
+            foreach($request->users as $user){
+                $userArray[] = $user;
+            }
+        }
+        $userArray[] = strval(Auth::id());
+        $chat->users()->sync($userArray);
         return redirect()->route('home');
     }
 

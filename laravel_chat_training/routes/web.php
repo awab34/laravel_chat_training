@@ -29,5 +29,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('show-chat/{id}', 'ChatController@show')->name('chat.show');
     Route::put('update-chat/{id}', 'ChatController@update')->name('chat.update');
     Route::get('delete-chat/{id}', 'ChatController@destroy')->name('chat.delete');
+
+    Route::get('delete-message/{id}', 'MassageController@destroy')->name('message.delete');
+    Route::post('message-store','MassageController@store' )->name('message.store');
+
+    Route::get('/friends', 'FriendController@index')->name('freinds');
+    Route::get('unfriend/{id}', 'FriendController@destroy')->name('unfriend');
+    Route::get('add-firend', 'FriendController@create')->name('add.firend');
+    Route::post('search-friend','FriendController@search' )->name('search.friend');
+    Route::post('accept-friend','FriendController@store' )->name('accept.friend');
+    Route::get('request-friend/{id}','FreindRequestController@store' )->name('request.friend');
+
+    Route::get('message-friend/{id}','FreindChatController@show' )->name('message.friend');
+    Route::post('message-store','FreindChatController@store' )->name('message.store');
 });
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\massage;
 use Illuminate\Http\Request;
+use Auth;
 
 class MassageController extends Controller
 {
