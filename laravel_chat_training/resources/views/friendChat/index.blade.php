@@ -3,7 +3,7 @@
 @section('content')
 @if (count($messages) == 0)
         <p>No Messages Found</p>
-        <form action="{{route('message.store')}}" method="POST">
+        <form action="{{route('message.store.friend.chat')}}" method="POST">
             @csrf
             <input type="hidden" name="reciever" value="{{$friend_id}}">
             <input type="text" name="message">
@@ -12,10 +12,12 @@
         @else
         <ul>
         @foreach ($messages as $item)
-        <p><b>{{$item['name']}}:</b>  {{$item['message']}} <a href="{{route('message.delete',$item['id'])}}">Delete</a></p>
+        <p><b>{{$item['name']}}:</b>  {{$item['message']}}@if ($item['senderId'] == Auth::id())
+             <a href="{{route('message.delete',$item['id'])}}">Delete</a>
+             @endif</p>
         @endforeach
         </ul>  
-        <form action="{{route('message.store')}}" method="POST">
+        <form action="{{route('message.store.friend.chat')}}" method="POST">
             @csrf
             <input type="hidden" name="reciever" value="{{$friend_id}}">
             <input type="text" name="message">

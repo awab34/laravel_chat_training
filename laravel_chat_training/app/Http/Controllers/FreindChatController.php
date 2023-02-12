@@ -42,22 +42,24 @@ class FreindChatController extends Controller
         $countMessages = count($recieved) + count($sent);
         $sentIndex = 0;
         $recievedIndex = 0;
-        for($i = 0;$i<$countMessages;$i++){
+        for($i = 0;$i < $countMessages ;$i++){
 
-            if(($sentIndex == (count($sent) - 1) && count($sent) != 1) || (count($sent) == 0 && count($recieved) == 1) || count($sent) == 0){
+            if((($sentIndex == count($sent) ) && count($sent) != 1) || count($sent) == 0 ){
                 $user = User::find($recieved[$recievedIndex]->sender);
                 $messagesArray[] = [
                     'id'=>$recieved[$recievedIndex]->id,
                     'message'=>$recieved[$recievedIndex]->message,
-                    'name'=>$user->name
+                    'name'=>$user->name,
+                    'senderId'=>$user->id
                 ];
                 $recievedIndex++;
-            }else if(($recievedIndex == (count($recieved) - 1) && count($recieved) != 1) || (count($recieved) == 0 && count($sent) == 1) || count($recieved) == 0){
+            }else if((($recievedIndex == count($recieved))  && count($recieved) != 1) || count($recieved) == 0 ){
                 $user = User::find($sent[$sentIndex]->sender);
                 $messagesArray[] = [
                     'id'=>$sent[$sentIndex]->id,
                     'message'=>$sent[$sentIndex]->message,
-                    'name'=>$user->name
+                    'name'=>$user->name,
+                    'senderId'=>$user->id
                 ];
                 
                 $sentIndex++;
@@ -68,7 +70,8 @@ class FreindChatController extends Controller
                     $messagesArray[] = [
                         'id'=>$recieved[$recievedIndex]->id,
                         'message'=>$recieved[$recievedIndex]->message,
-                        'name'=>$user->name
+                        'name'=>$user->name,
+                        'senderId'=>$user->id
                     ];
                     $recievedIndex++;
                 }else{
@@ -76,7 +79,8 @@ class FreindChatController extends Controller
                     $messagesArray[] = [
                         'id'=>$sent[$sentIndex]->id,
                         'message'=>$sent[$sentIndex]->message,
-                        'name'=>$user->name
+                        'name'=>$user->name,
+                        'senderId'=>$user->id
                     ];
                     $sentIndex++;
                 }

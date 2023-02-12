@@ -41,6 +41,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('request-friend/{id}','FreindRequestController@store' )->name('request.friend');
 
     Route::get('message-friend/{id}','FreindChatController@show' )->name('message.friend');
-    Route::post('message-store','FreindChatController@store' )->name('message.store');
+    Route::post('message-store-friend-chat','FreindChatController@store' )->name('message.store.friend.chat');
 });
 
